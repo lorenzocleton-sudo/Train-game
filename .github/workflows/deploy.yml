@@ -1,22 +1,29 @@
 name: Deploy to GitHub Pages
 
+# Publishes the build to the gh-pages branch. GitHub Pages serves that branch
+# (enabled automatically when the branch was first pushed), so no repo settings
+# need to be touched. A second job then opens the live URL in Playwright.
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  LIVE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    outputs:
+      entry: ${{ steps.entry.outputs.entry }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,20 +34,42 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      - name: Configure Pages (enables Pages with source "GitHub Actions" if it is off)
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
+      - name: Remember the hashed entry file (to detect when the live site is updated)
+        id: entry
+        run: echo "entry=$(grep -o 'assets/index-[^"]*\.js' dist/index.html | head -1)" >> "$GITHUB_OUTPUT"
+      - name: Push dist to gh-pages
+        working-directory: dist
+        run: |
+          touch .nojekyll
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Deploy ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages
 
-  deploy:
-    needs: build
+  verify-live:
+    needs: deploy
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Wait for the new build to be live
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS "$LIVE_URL" | grep -q "${{ needs.deploy.outputs.entry }}"; then echo "live"; exit 0; fi
+            sleep 10
+          done
+          echo "Live site did not update in 10 minutes"; exit 1
+      - run: npx playwright install --with-deps chromium
+      - name: Playwright smoke test against the live URL
+        run: BASE_URL="$LIVE_URL" npm run e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-screenshots
+          path: screenshots/

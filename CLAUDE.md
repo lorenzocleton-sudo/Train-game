@@ -26,5 +26,5 @@ Browser-based 3D mobile game. Design: `docs/DESIGN.md`. Visuals: `docs/STYLE.md`
 
 ## Deploy
 - `.github/workflows/ci.yml`: on pull requests — typecheck, tests, build, Playwright smoke test.
-- `.github/workflows/deploy.yml`: on push to `main` — build and deploy to GitHub Pages.
+- `.github/workflows/deploy.yml`: on push to `main` — build, push `dist/` to the `gh-pages` branch (Pages serves it), then Playwright smoke test against the live URL.
 - Live: https://lorenzocleton-sudo.github.io/Train-game/

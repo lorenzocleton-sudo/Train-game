@@ -8,7 +8,10 @@
     low golden sun with a long baked-once shadow, warm fog + vignette, Dusk placeholder strip on the left
     (black-purple, breathing violet edge, the one real-time light), fps counter.
   - Fills the screen in portrait and landscape (`fitFrustum` keeps `viewSize` world units across the shorter side).
-  - CI: typecheck, unit tests, build and Playwright on every PR. Deploy to GitHub Pages on every push to `main`.
+  - CI: typecheck, unit tests, build and Playwright on every PR. On every push to `main` the build is pushed to the
+    `gh-pages` branch (GitHub Pages serves it) and Playwright opens the live URL and uploads screenshots.
+  - Pages deploys from the `gh-pages` branch: enabling Pages with source "GitHub Actions" was not possible
+    (API blocked from the dev sandbox; `GITHUB_TOKEN` may not create a Pages site), but pushing `gh-pages` enabled it automatically.
 
 ## Next
 - Step 2 (proposal): player character with virtual joystick (bottom left), touch-first movement on the ground plane.
