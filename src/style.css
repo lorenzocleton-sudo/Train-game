@@ -1,0 +1,69 @@
+:root {
+  --ui-text: #f6ead2;          /* warm cream */
+  --ui-panel: rgba(28, 20, 14, 0.55); /* dark translucent, warm-tinted */
+  --ui-radius: 10px;
+  --ui-tap-min: 48px;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #e9c38c;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ui-text);
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: block;
+  touch-action: none;
+}
+
+/* Cheap colour grade: warm vignette over the canvas (no post-processing pass needed). */
+#grade {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 60% 45%, rgba(255, 214, 150, 0) 45%, rgba(120, 70, 30, 0.28) 100%);
+}
+
+#hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right))
+    max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+}
+
+.hud-panel {
+  background: var(--ui-panel);
+  color: var(--ui-text);
+  border-radius: var(--ui-radius);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.fps-counter {
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top));
+  left: max(10px, env(safe-area-inset-left));
+  padding: 6px 10px;
+  font: 600 13px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+  letter-spacing: 0.02em;
+}
