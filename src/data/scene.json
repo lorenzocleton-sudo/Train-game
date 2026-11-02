@@ -1,0 +1,79 @@
+{
+  "camera": {
+    "viewSize": 14,
+    "distance": 40,
+    "yawDeg": 45,
+    "pitchDeg": 35.264,
+    "near": 0.1,
+    "far": 200
+  },
+  "renderer": {
+    "maxPixelRatio": 1.5,
+    "antialiasBelowPixelRatio": 2,
+    "shadowMapSize": 1024
+  },
+  "palette": {
+    "skyTop": "#f2c57c",
+    "skyHorizon": "#f7dca6",
+    "haze": "#e9c38c",
+    "groundBase": "#c9b06a",
+    "groundStrokes": [
+      "#d8c07a",
+      "#a9a85a",
+      "#8f9e52",
+      "#c4a862"
+    ],
+    "cube": "#b5653d",
+    "cubeStrokes": [
+      "#9c5534",
+      "#c47a4a",
+      "#86503a",
+      "#7a7a44"
+    ],
+    "sun": "#ffcf8f",
+    "skyLight": "#ffe3b0",
+    "groundBounce": "#7a6a3a",
+    "shadowTint": "#4a3a52",
+    "duskCore": "#0d0614",
+    "duskBody": "#1c0d2b",
+    "duskEdgeGlow": "#7b5cc4",
+    "duskLight": "#6a4fd0",
+    "groundBlotches": [
+      "#9aa252",
+      "#dcc078",
+      "#88994c",
+      "#b5a45a"
+    ]
+  },
+  "lighting": {
+    "sunIntensity": 3.0,
+    "sunElevationDeg": 14,
+    "sunAzimuthDeg": 110,
+    "hemiIntensity": 1.0,
+    "duskLightIntensity": 4,
+    "duskLightDistance": 6,
+    "duskPulseSpeed": 0.6,
+    "duskPulseAmount": 0.25
+  },
+  "fog": {
+    "near": 36,
+    "far": 95
+  },
+  "world": {
+    "groundSize": 60,
+    "groundTextureSize": 512,
+    "groundStrokeCount": 420,
+    "cubeSize": 2,
+    "cubeBevelRadius": 0.28,
+    "cubeBevelSegments": 4,
+    "duskDepth": 30,
+    "duskHeight": 7,
+    "duskEdgeWidth": 2.4,
+    "duskScreenFraction": 0.2,
+    "duskMinVisibleWidth": 2.5
+  },
+  "debug": {
+    "fpsSampleWindow": 30,
+    "fpsUpdateIntervalMs": 250
+  }
+}
